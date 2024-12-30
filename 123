@@ -1,0 +1,20 @@
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
+async def check_bot_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message.reply_to_message:
+        await update.message.reply_text("Используйте эту команду в ответ на сообщение")
+        return
+        
+    message = update.message.reply_to_message
+    is_bot = message.from_user.is_bot
+    response = f"Сообщение {'от бота' if is_bot else 'не от бота'}"
+    await update.message.reply_text(response)
+
+def main():
+    app = ApplicationBuilder().token("5149541469:AAE6-AnelVfNpmm737OICHVH87eYiFKE_xc").build()
+    app.add_handler(CommandHandler("isbot", check_bot_message))
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
